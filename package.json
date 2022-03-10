@@ -1,0 +1,24 @@
+{
+  "name": "hw12",
+  "version": "1.0.0",
+  "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heatherveva/hw12.git"
+  },
+  "author": "heather stevens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heatherveva/hw12/issues"
+  },
+  "homepage": "https://github.com/heatherveva/hw12#readme",
+  "dependencies": {
+    "ctable": "^0.0.3",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.2.5"
+  }
+}
