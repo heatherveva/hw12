@@ -1,64 +1,81 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const cTable = require("console.table");
+// const cTable = require("console.table");
 require("dotenv").config();
 
-
 const db = mysql.createConnection(
-    {
-        host: "localhost",
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-    },
-    console.log("Connected to the employee_db database.")
+  {
+    host: "localhost",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  },
+  console.log("Connected to the employee_db database.")
 );
 
 function chooseAction(initialOptions) {
-    let actionChoice;
-  
-switch (initialOptions)
-{
+  let choice;
+
+  switch (initialOptions) {
     case "View all departments":
-        actionChoice = viewDepartments();
-        break;
-    case  "View all roles":
-        actionChoice = viewRoles();
-        break;
+      choice = viewDepartments();
+      break;
+    case "View all roles":
+      choice = viewRoles();
+      break;
     case "View all employees":
-        actionChoice = viewEmployees();
-        break;
+      choice = viewEmployees();
+      break;
     case "Add a department":
-        actionChoice = addDepartments();
-        break;
+      choice = addDepartments();
+      break;
     case "Add a role":
-        actionChoice = addRole();
-        break;
+      choice = addRole();
+      break;
     case "Add an employee":
-        actionChoice = addEmployee();
-        break;
+      choice = addEmployee();
+      break;
     case "Update an employee role":
-    actionChoice = updateEmployee();
-        break;
+      choice = updateEmployee();
+      break;
+    case "Quit":
+      choice = quit();
+      break;
+  }
+
+  inquirer
+    .prompt({
+      name: "initialOptions",
+      type: "list",
+      message: "What would you like to do today?",
+      choices: [
+        "View all departments",
+        "View all roles",
+        "View all employees",
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "Update an employee role",
+        "Quit",
+      ],
+      loop: false,
+    })
+    .then((answer) => {
+      chooseAction(answer.choice);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
-inquirer
-  .prompt(
-      {
-    name: "initialOptions",
-    type: "list",
-    message: "What would you like to do today?",
-    choices: [
-        {name: "View all departments", value: "viewDepartments"}, 
-        {name: "View all roles", value: "viewRoles"}, 
-        {name: "View all employees", value: "addDepartments" }, 
-        {name: "Add a department", value: "addDepartments"}, 
-        {name: "Add a role", value: "addRole"}, 
-        {name: "Add an employee", value: "addEmployee"}, 
-        {name: "Update an employee role", value: "updateEmployee" }, 
-        {name: "Quit", value: "quit"} ]
-  }
-    )
-  
+//functions will execute action in mySQL    
+function viewDepartments()
+function viewRoles()
+function viewEmployees()
+function addDepartments()
+function addRole()
+function addEmployee()
+function updateEmployee()
+function quit()
 
-
+chooseAction(choice);

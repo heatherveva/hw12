@@ -18,6 +18,7 @@
   "homepage": "https://github.com/heatherveva/hw12#readme",
   "dependencies": {
     "ctable": "^0.0.3",
+    "dotenv": "^16.0.0",
     "inquirer": "^8.2.0",
     "mysql2": "^2.2.5"
   }
