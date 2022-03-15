@@ -69,7 +69,7 @@ function init() {
         viewDepartments();
       } else if (answers.list === "VIEW_ROLES") {
         viewRoles();
-      } else if (answers.list === "ADD_EMPLOYEES") {
+      } else if (answers.list === "ADD_EMPLOYEE") {
         createEmployee();
       } else if (answers.list === "ADD_ROLES") {
         createRole();
@@ -210,9 +210,9 @@ function addDepartment() {
   inquirer
     .prompt([
       {
-        name: "confirm",
+        name: "name",
         type: "input",
-        message: "What is the department's name?",
+        message: "What department would you like to add?",
       },
     ])
     .then((answers) => {

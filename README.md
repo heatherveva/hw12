@@ -34,7 +34,7 @@ This application requires Node.js, Inquirer, dotenv (to hide sensitive database 
 
 ## Walkthrough
 
-Walkthrough Link:
+Walkthrough Link: https://www.loom.com/share/cfd9735147ff4a348a24cbb1670576e2
 
 ## License
 
