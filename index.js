@@ -76,6 +76,7 @@ function init() {
     });
 }
 
+// displays the employee table from the database
 function viewEmployees() {
   db.query("SELECT * FROM employee", function (err, results) {
     console.table(results);
@@ -83,18 +84,21 @@ function viewEmployees() {
   init();
 }
 
+// displays the department table from the database
 function viewDepartments() {
   db.query("SELECT * FROM department", function (err, results) {
     console.table(results);
   });
 }
 
+// displays the roles table from the database
 function viewRoles() {
   db.query("SELECT * FROM roles", function (err, results) {
     console.table(results);
   });
 }
 
+// prompts the user to input new employee info and adds it to the database
 function createEmployee() {
   inquirer
     .prompt([
@@ -151,6 +155,7 @@ function createEmployee() {
     });
 }
 
+// prompts the user to input new role info and adds it to the database
 function createRole() {
   inquirer
     .prompt([
@@ -189,6 +194,7 @@ function createRole() {
     });
 }
 
+// prompts the user to input new department info and adds it to the database
 function addDepartment() {
   inquirer
     .prompt([
@@ -206,63 +212,36 @@ function addDepartment() {
 }
 
 function updateEmployee() {
-  const employees = db.query("SELECT * FROM employee") 
-  inquirer
-    .prompt([
-      {
-        name: "select",
-        type: "list",
-        message: "What employee would you like to update?",
-        choices: employees,
-      },
-      {
-        name: "lastName",
-        type: "input",
-        message: "What's the employee's last name?",
-      },
-    ])
-    .then((answers) => {
-      const employees = db.query("SELECT * FROM employee") 
+  db.query("SELECT * FROM employee"), function (err, results) {
+    const employees = results.map(({ id, last_name }) => ({
+      name: last_name,
+      value: id,
+    }));
+    inquirer
+    .prompt({
+      name: "id",
+      type: "list",
+      message: "Which employee would you like to update?",
+      choices: employees, 
     })
-        inquirer
-          .prompt({
-            type: "list",
-            name: "id",
-            message: "What is the employee's role?",
-            choices: roles,
-          })
-          .then((role) => {
-            db.query(
-              "SELECT * FROM employee where manager_id is null",
-              function (err, results) {
-                const managers = results.map(({ id, last_name }) => ({
-                  name: last_name,
-                  value: id,
-                }));
-                inquirer
-                  .prompt({
-                    type: "list",
-                    name: "id",
-                    message: "What is the manager's name?",
-                    choices: managers,
-                  })
-                  .then((manager) => {
-                    db.query(
-                      "INSERT INTO employee(first_name, last_name, role_id, manager_id) values(?,?,?,?)",
-                      [answers.firstName, answers.lastName, role.id, manager.id]
-                    );
-                    init();
-                  });
-              }
-            );
-          });
-      });
+    .then((employee) => {
+      db.query("SELECT * FROM roles"), function (err, results) {
+        const roles = results.map(({ id, title }) => ({
+          name: title,
+          value: id,
+    }));
+    inquirer
+    .prompt({
+      name: "id",
+      type: "list",
+      message: "Which employee would you like to update?",
+      choices: roles, 
+    })        
+    .then((role) => {
+      db.query("UPDATE employees SET role_id = ? WHERE id = ?", [role.id, employee.id]);
+      init();
     });
-}
-
-// Inquirer prompt to ask for first, last name
-// .then query roles table
-// Inquirer prompt for role they want to choose
-// .then ask who the manager is
-
+  });
+}        
+        
 init();
