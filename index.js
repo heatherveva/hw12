@@ -72,6 +72,8 @@ function init() {
         addDepartment();
       } else if (answers.list === "UPDATE_EMPLOYEE") {
         updateEmployee();
+      } else if (answers.list === "QUIT") {
+        quit();
       }
     });
 }
@@ -212,36 +214,48 @@ function addDepartment() {
 }
 
 function updateEmployee() {
-  db.query("SELECT * FROM employee"), function (err, results) {
-    const employees = results.map(({ id, last_name }) => ({
-      name: last_name,
-      value: id,
+  db.query("SELECT * FROM employee", function (err, results) {
+    console.table(results);
+    const employees = results.map(({ id }) => ({
+      name: id,
     }));
     inquirer
-    .prompt({
-      name: "id",
-      type: "list",
-      message: "Which employee would you like to update?",
-      choices: employees, 
-    })
-    .then((employee) => {
-      db.query("SELECT * FROM roles"), function (err, results) {
-        const roles = results.map(({ id, title }) => ({
-          name: title,
-          value: id,
-    }));
-    inquirer
-    .prompt({
-      name: "id",
-      type: "list",
-      message: "Which employee would you like to update?",
-      choices: roles, 
-    })        
-    .then((role) => {
-      db.query("UPDATE employees SET role_id = ? WHERE id = ?", [role.id, employee.id]);
-      init();
-    });
+      .prompt({
+        name: "id",
+        type: "list",
+        message: "Which employee would you like to update?",
+        choices: employees,
+      })
+      .then((employee) => {
+        db.query("SELECT * FROM roles", function (err, results) {
+          const roles = results.map(({ id, role_id }) => ({
+            name: role_id,
+            value: id,
+          }));
+          inquirer
+            .prompt({
+              name: "id",
+              type: "list",
+              message: "Please enter the employye's new role id.",
+              choices: roles,
+            })
+            .then((role) => {
+              db.query("UPDATE employee SET role_id = ? WHERE id = ?", [
+                role.id,
+                employee.id,
+              ]);
+              db.query("SELECT * FROM employee", (err, results) => {
+                console.table(results);
+                init();
+              });
+            });
+        });
+      });
   });
-}        
-        
+}
+
+function quit() {
+  console.log("Thank you for viewing the company database.");
+}
+
 init();
