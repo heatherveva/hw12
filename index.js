@@ -98,6 +98,7 @@ function viewDepartments() {
   db.query("SELECT * FROM department", function (err, results) {
     console.table(results);
   });
+  init();
 }
 
 // displays the roles table from the database
@@ -105,6 +106,7 @@ function viewRoles() {
   db.query("SELECT * FROM roles", function (err, results) {
     console.table(results);
   });
+  init();
 }
 
 // prompts the user to input new employee info and adds it to the database
