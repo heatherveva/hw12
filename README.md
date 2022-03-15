@@ -24,11 +24,13 @@ If the user selects add a department, they are presented with a prompt, and the 
 
 If the user selects update an employee, they are presented with a prompt to select an employee id, then a role id, then the employee table is displayed with updated role id.
 
+If the user selects to delete an employee, they are asked what the employees id number is, then the employee matching that id is deleted.
+
 When the user is done using the application, they can select the quit option to quit the application. They will receive a brief sign off message upon selection of the quit option.
 
 ## Installation
 
-This application requires Node.js, Inquirer, and MySQL.
+This application requires Node.js, Inquirer, dotenv (to hide sensitive database credentials), and MySQL.
 
 ## Walkthrough
 

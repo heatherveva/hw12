@@ -50,6 +50,11 @@ function init() {
             value: "UPDATE_EMPLOYEE",
           },
           {
+            name: "Delete an employee.",
+            value: "DELETE_EMPLOYEE",
+          },
+
+          {
             name: "Quit.",
             value: "QUIT",
           },
@@ -72,6 +77,8 @@ function init() {
         addDepartment();
       } else if (answers.list === "UPDATE_EMPLOYEE") {
         updateEmployee();
+      } else if (answers.list === "DELETE_EMPLOYEE") {
+        deleteEmployee();
       } else if (answers.list === "QUIT") {
         quit();
       }
@@ -250,6 +257,26 @@ function updateEmployee() {
               });
             });
         });
+      });
+  });
+}
+
+function deleteEmployee() {
+  db.query("SELECT * FROM employee", function (err, results) {
+    console.table(results);
+    const employees = results.map(({ id }) => ({
+      name: id,
+    }));
+    inquirer
+      .prompt({
+        name: "id",
+        type: "list",
+        message: "Which employee would you like to delete?",
+        choices: employees,
+      })
+      .then((employee) => {
+        db.query("DELETE from employee WHERE id = ?", [employee.id]);
+        init();
       });
   });
 }
